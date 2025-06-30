@@ -12,5 +12,10 @@ export class User {
   ) {
     
   }
+
+  isAdult(): boolean {
+    return this.birthDate.isAdult();
+  }
 }
+
 
