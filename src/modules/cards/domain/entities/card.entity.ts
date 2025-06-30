@@ -4,10 +4,11 @@ import { CardType } from '../enums/card-type.enum';
 import { CardBrand } from '../enums/card-brand.enum';
 import { Cpf } from '../../../users/domain/value-objects/cpf.vo'
 import { HashedPassword } from '../value-objects/hashed-password.vo';
+import { CardId } from '../value-objects/card-id.vo';
 
 export class Card {
   constructor(
-    public readonly id: string,
+    public readonly id: CardId,
     public readonly ownerCpf: Cpf,
     public readonly number: CardNumber, 
     public readonly type: CardType,
