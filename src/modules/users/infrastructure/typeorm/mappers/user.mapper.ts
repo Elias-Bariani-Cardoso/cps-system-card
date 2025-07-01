@@ -1,9 +1,9 @@
-import { User } from '../../../../domain/entities/user.entity';
+import { User } from '../../../domain/entities/user.entity';
 import { UserEntity } from '../entities/user.entity';
-import { Cpf } from '../../../../domain/value-objects/cpf.vo';
-import { BirthDate } from '../../../../domain/value-objects/birth-date.vo';
-import { MonthlyIncome } from '../../../../domain/value-objects/monthly-income.vo';
-import { Name } from '../../../../domain/value-objects/name.vo';
+import { Cpf } from '../../../domain/value-objects/cpf.vo';
+import { BirthDate } from '../../../domain/value-objects/birth-date.vo';
+import { MonthlyIncome } from '../../../domain/value-objects/monthly-income.vo';
+import { Name } from '../../../domain/value-objects/name.vo';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {
