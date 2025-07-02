@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { User } from '../../../domain/entities/user.entity';
 import { UserEntity } from '../entities/user.entity';
 import { Cpf } from '../../../domain/value-objects/cpf.vo';
@@ -5,8 +6,9 @@ import { BirthDate } from '../../../domain/value-objects/birth-date.vo';
 import { MonthlyIncome } from '../../../domain/value-objects/monthly-income.vo';
 import { Name } from '../../../domain/value-objects/name.vo';
 
+@Injectable()
 export class UserMapper {
-  static toDomain(entity: UserEntity): User {
+  toDomain(entity: UserEntity): User {
     return new User(
       new Cpf(entity.cpf),
       new Name(entity.fullName),
@@ -15,7 +17,7 @@ export class UserMapper {
     );
   }
 
-  static toPersistence(user: User): Partial<UserEntity> {
+  toPersistence(user: User): Partial<UserEntity> {
     return {
       cpf: user.cpf.getValue(),
       fullName: user.name.getValue(),
