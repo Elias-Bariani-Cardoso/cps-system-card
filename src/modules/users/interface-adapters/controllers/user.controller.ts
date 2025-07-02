@@ -1,5 +1,3 @@
-// interface-adapters/controllers/user.controller.ts
-
 import {
   Controller,
   Get,
@@ -13,29 +11,38 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
-import { UsersService } from '../../application/services/user.service';
+import { RegisterUserUseCase } from '../../application/use-cases/register-user.use-case';
+import { FindAllUsersUseCase } from '../../application/use-cases/find-all-users.use-case';
+import { FindUserByCpfUseCase } from '../../application/use-cases/find-user-by-cpf.use-case';
+import { UpdateUserUseCase, UpdateUserInput } from '../../application/use-cases/update-user.use-case';
+import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
 import { RegisterUserInput } from '../../application/use-cases/dtos/register-user.input';
-import { UpdateUserInput } from '../../application/use-cases/dtos/update-user.input';
 import { UserOutput } from '../../application/use-cases/dtos/user.output';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly registerUserUseCase: RegisterUserUseCase,
+    private readonly findAllUsersUseCase: FindAllUsersUseCase,
+    private readonly findUserByCpfUseCase: FindUserByCpfUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created successfully', type: UserOutput })
   @ApiBody({ type: RegisterUserInput })
   async create(@Body() input: RegisterUserInput): Promise<UserOutput> {
-    return this.usersService.create(input);
+    return this.registerUserUseCase.execute(input);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of users', type: [UserOutput] })
   async findAll(): Promise<UserOutput[]> {
-    return this.usersService.findAll();
+    return this.findAllUsersUseCase.execute();
   }
 
   @Get(':cpf')
@@ -45,7 +52,7 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async findOne(@Param('cpf') cpf: string): Promise<UserOutput> {
     try {
-      return await this.usersService.findOneByCpf(cpf);
+      return await this.findUserByCpfUseCase.execute(cpf);
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -61,11 +68,7 @@ export class UserController {
     @Param('cpf') cpf: string,
     @Body() input: UpdateUserInput,
   ): Promise<UserOutput> {
-    try {
-      return await this.usersService.update(cpf, input);
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
+    return this.updateUserUseCase.execute(cpf, input);
   }
 
   @Delete(':cpf')
@@ -75,10 +78,6 @@ export class UserController {
   @ApiResponse({ status: 404, description: 'User not found' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('cpf') cpf: string): Promise<void> {
-    try {
-      await this.usersService.remove(cpf);
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
+    return this.deleteUserUseCase.execute(cpf);
   }
 }
