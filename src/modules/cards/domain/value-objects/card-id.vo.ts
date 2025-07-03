@@ -1,4 +1,3 @@
-// card/value-objects/card-id.vo.ts
 import { v4 as uuidv4, validate as isUuid } from 'uuid';
 
 export class CardId {
