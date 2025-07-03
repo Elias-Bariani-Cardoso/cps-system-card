@@ -1,5 +1,3 @@
-// src/modules/users/infrastructure/typeorm/repositories/user.repository.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -23,8 +21,6 @@ export class TypeOrmUserRepository implements UserRepository {
     const savedEntity = await this.ormRepository.save(entity);
     return this.mapper.toDomain(savedEntity);
   }
-
-  // --- Implementação dos métodos que estavam faltando ---
 
   async findById(id: string): Promise<User | undefined> {
     const entity = await this.ormRepository.findOne({ where: { id } });

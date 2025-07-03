@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { USER_REPOSITORY, UserRepository } from '../../domain/repositories/user.repository';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { RegisterUserInput } from './dtos/register-user.input';
 import { UserDtoMapper } from './mappers/user.dto.mapper';
 import { UserOutput } from './dtos/user.output';
+import { TypeOrmUserRepository } from '../../infrastructure/typeorm/repositories/user.repository';
 
 @Injectable()
 export class RegisterUserUseCase {
   constructor(
-    @Inject(USER_REPOSITORY)
+    @Inject(TypeOrmUserRepository)
     private readonly userRepository: UserRepository,
   ) {}
 

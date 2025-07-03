@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { USER_REPOSITORY, UserRepository } from '../../domain/repositories/user.repository';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { PartialType } from '@nestjs/swagger';
 import { RegisterUserInput } from './dtos/register-user.input';
 import { UserDtoMapper } from './mappers/user.dto.mapper';
@@ -9,13 +9,14 @@ import { Cpf } from '../../domain/value-objects/cpf.vo';
 import { Name } from '../../domain/value-objects/name.vo';
 import { BirthDate } from '../../domain/value-objects/birth-date.vo';
 import { MonthlyIncome } from '../../domain/value-objects/monthly-income.vo';
+import { TypeOrmUserRepository } from '../../infrastructure/typeorm/repositories/user.repository';
 
 export class UpdateUserInput extends PartialType(RegisterUserInput) {}
 
 @Injectable()
 export class UpdateUserUseCase {
   constructor(
-    @Inject(USER_REPOSITORY)
+    @Inject(TypeOrmUserRepository)
     private readonly userRepository: UserRepository,
   ) {}
 
